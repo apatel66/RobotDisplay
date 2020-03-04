@@ -1,11 +1,3 @@
-// Demonstrates usage of the new udpServer feature.
-// You can register the same function to multiple ports,
-// and multiple functions to the same port.
-//
-// 2013-4-7 Brian Lee <cybexsoft@hotmail.com>
-//
-// License: GPLv2
-
 #include <EtherCard.h>
 #include <IPAddress.h>
 #include <ArduinoJson.h>
@@ -35,6 +27,7 @@ static byte mymac[] = { 0x70,0x69,0x69,0x2D,0x30,0x31 };
 byte Ethernet::buffer[500]; // TCP/IP send and receive buffer
 
 char* arr[3][4];
+
 // Callback that prints received packets to the serial port
 void udpSerialPrint(uint16_t dest_port, uint8_t src_ip[IP_LEN], uint16_t src_port, const char *data, uint16_t len){
   lcd.clear();
@@ -60,21 +53,7 @@ void udpSerialPrint(uint16_t dest_port, uint8_t src_ip[IP_LEN], uint16_t src_por
    else
     Serial.println("Sys Good");
 
-
-    /*for (int j = 0; j < root.value("arrSize"); ++j ) {
-      for (int i = 0; i < 2; i+=2) {
-        arr[j][i] = (const char*) root["sendArray"][j]["key"];
-        arr[j][i+1] = (const char*) root["sendArray"][j]["value"];
-     
-         Serial.print(arr[j][i]);
-         Serial.print("\t");
-         Serial.println(arr[j][i+1]);
-      }
-    }*/
-        //Serial.println(x); 
-
   lcd.setCursor(0,0);
-  //lcd.print(arr[0][0]);
 }
 
 void setup(){
@@ -105,6 +84,6 @@ void setup(){
 }
 
 void loop(){
-  // This must be called for ethercard functions to work.
+  // This must be called for Ethercard functions to work.
   ether.packetLoop(ether.packetReceive());
 }
