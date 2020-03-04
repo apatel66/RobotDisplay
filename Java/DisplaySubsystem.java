@@ -10,23 +10,6 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.util.ArrayList;
 
-/*
-To Use the Arduino Nano Display...
-- Instantiate a DisplaySubsystem in the RobotContainer class normally.
-- Instantiate a DisplaySubsystem in the Robot class and any subsystem and set it equal to the RobotContainer DisplaySubsystem.
-- In the RobotInit method or subsystem constructor, call the addDevice method to set up what subsystems and what other parts of the robot are going to be montiored
-- In the teleopPeriodic method, use the refreshDisplay method to constantly update the display to the current index
-- Set up public static int y and x in the Robot class.
-- Either in the teleopPeriodic or a subsystem periodic method, use the addToArray method to add values/ShuffleBoard commands
-- Use casting and the .toString() method to get the string value of an object
-
-- addDevice (String deviceName)
-- addToArray (String device, String key, String value)
-- refreshDisplay (int x, int x)
-*/
-
-
-
 public class DisplaySubsystem extends SubsystemBase {
 
     //Index of current value to display
