@@ -111,6 +111,7 @@ public class DisplaySubsystem extends SubsystemBase {
         }
     }
 
+    //Continuously refresh the display
     public void periodic() {
         refreshDisplay();
     }
