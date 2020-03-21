@@ -18,7 +18,7 @@ public class DisplaySubsystem extends SubsystemBase {
 
     //Instantiate timer to control refresh rate
     public static Timer timer = new Timer();
-    public static double refreshTime = 0.2;
+    public static final double REFRESH_TIME = 0.2;
 
     //UDP variables and objects
     public static DatagramSocket ds;
@@ -46,60 +46,36 @@ public class DisplaySubsystem extends SubsystemBase {
         dataArray.add(init);
     }
 
-    //Creates a new ArrayList for a different part of the robot and adds it to the main ArrayList
-    public void addDevice(String deviceName) {
-        boolean deviceDoesNotExist = true;
-
-        //If program tries to create two of the same devices, an error will be thrown
-        for (int i = 0; i < dataArray.size(); ++i) {
-            if (dataArray.get(i).get(1).equals(deviceName)) {
-                deviceDoesNotExist = false;
-                throw new RuntimeException("Device: \"" + deviceName + "\" already exists");
-            }
-        }
-
-        //If the device is new, add an ArrayList
-        if(deviceDoesNotExist) {
-            ArrayList<String> init = new ArrayList<String>();
-            init.add("Name");
-            init.add(deviceName);
-            dataArray.add(init);
-        }
-    }
-
     //Adds/Updates new values to the main ArrayList
-    public void addToArray(String device, String key, String value) {
-        boolean newVal = false;
-        boolean valueExists = false;
+    public void add(String device, String key, String value) {
 
-        int deviceIndex = 0;
+        int deviceIndex = -1;
+
+        //Find the index of the selected device. If it doesn't exist, index = -1
         for (int i = 0; i < dataArray.size(); ++i) {
-            //If the value is new or is updated, then break
-            if (newVal || valueExists) {
+            if (dataArray.get(i).get(1).toLowerCase().equals(device.toLowerCase())) {
+                deviceIndex = i;
                 break;
             }
+        }
 
-            if (dataArray.get(i).get(1).equals(device)) {
-                for (int j = 0; j < dataArray.get(i).size(); j+=2) {
-                    //Check to see if value already exists
-                    if (dataArray.get(i).get(j).equals(key)) {
-                        dataArray.get(i).set(j+1, value);
-                        valueExists = true;
-                        break;
-                    }
+        //If device doesn't exist, add a new row to the array and update the index
+        if (deviceIndex == -1) {
+            ArrayList<String> init = new ArrayList<String>();
+            init.add("Name");
+            init.add(device);
+            dataArray.add(init);
 
-                    //If the end of the ArrayList is reached, then the added value must be new
-                    else if (j == dataArray.get(i).size() - 2) {
-                        newVal = true;
-                        deviceIndex = i;
-                        break;
-                    }
-                }
-            }
+            deviceIndex = dataArray.size() - 1;
+        }
 
-            //If the user tries finding a nonexistent device, an error will be thrown
-            else if (i == dataArray.size() - 1) {
-                throw new RuntimeException("Device: \"" + device + "\" not found");
+        //Check the row to see if the value already exists. If yes, update the value
+        boolean newVal = true;
+        for (int i = 0; i < dataArray.get(deviceIndex).size(); i += 2) {
+            if (dataArray.get(deviceIndex).get(i).toLowerCase().equals(key.toLowerCase())) {
+                dataArray.get(deviceIndex).set(i+1, value);
+                newVal = false;
+                break;
             }
         }
 
@@ -115,24 +91,22 @@ public class DisplaySubsystem extends SubsystemBase {
     public void display(int y, int x) throws IOException {
         JsonPair sendPair =  new JsonPair(dataArray.get(y).get(x), dataArray.get(y).get(x+1));
         String json = jsonAdapter.toJson(sendPair);
-        sendJson(json);
-    }
 
-    //Convert the JSON string to bytes, then a DatagramPacket, then send over the UDP DatagramSocket
-    public void sendJson(String toSend) throws IOException {
-        buff = toSend.getBytes();
+        //Convert the JSON string to bytes, then a DatagramPacket, then send over the UDP DatagramSocket
+        buff = json.getBytes();
         DatagramPacket dp = new DatagramPacket(buff, buff.length, ip, socketNum);
         ds.send(dp);
     }
 
     //Every 0.2 seconds, display the value based on the current x and y value
     public void refreshDisplay() {
-        if (timer.get() > refreshTime) {
+        if (timer.get() > REFRESH_TIME) {
             try {
                 display(displayY, displayX);
             } catch (java.io.IOException e) {
                 System.out.println("IOException");
             }
+
             timer.reset();
         }
     }
@@ -140,5 +114,4 @@ public class DisplaySubsystem extends SubsystemBase {
     public void periodic() {
         refreshDisplay();
     }
-
 }
