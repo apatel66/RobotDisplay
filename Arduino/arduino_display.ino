@@ -1,4 +1,3 @@
-//
 #include <EtherCard.h>
 #include <IPAddress.h>
 #include <ArduinoJson.h>
@@ -13,6 +12,7 @@ LiquidCrystal_I2C lcd(0x27, 16, 2);
 #define STATIC 1 
 
 // Ethernet interface IP address, Gateway IP, DNS IP and MAC address
+// CHANGE IPs TO YOUR OWN
 #if STATIC
 static byte myip[] = {10,27,67,203 };
 static byte gwip[] = { 10,27,67,1  };
