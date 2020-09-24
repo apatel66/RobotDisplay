@@ -1,6 +1,8 @@
 # RobotDisplay
 General purpose display for FIRST FRC robots (Uses ShuffleBoard)
 
+!! Needs a 12V to 9V converter !!
+
 ## To Use
 - Construct hardware with the given instructions
 - Upload the Arduino code onto the Arduino Nano
