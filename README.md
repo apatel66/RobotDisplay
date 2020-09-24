@@ -1,7 +1,7 @@
 # RobotDisplay
 General purpose display for FIRST FRC robots (Uses ShuffleBoard)
 
-!! Needs a 12V to 9V converter !!
+### !! Still needs a 12V to 9V converter !!
 
 ## To Use
 - Construct hardware with the given instructions
@@ -44,7 +44,7 @@ private static final DisplaySubsystem DISPLAY = RobotContainer.DISPLAY;
     - The class that contains the key and values. This is the object that is encoded into JSON
 
 ## Arduino
-Program for an Arduino (or Elegoo) Nano. Expects a JSON String in the form `{"key":"____", "value":"___"}`. The program then parses the string and prints the key on the first line and the value on the second. Make sure to update the IPs with the ones that pertain to your robot.
+Program for an Arduino (or Elegoo) Nano. Expects a JSON String in the form `{"key":"____", "value":"___"}`. The program then parses the string and prints the key on the first line and the value on the second.
 
 ## Schematics and CAD
 Contains a PDF file contianing drawings about how everything is wired along with measurements for the 3D printed parts. Also contains the current STL files for the Base, Lid, and Buckles. The buckle will likely need some sanding in order to fit snugly into the rest of the box.
